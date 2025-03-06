@@ -1,8 +1,8 @@
 // src/frontend/main.js
 import { renderGanttChart } from './components/ganttChart.js';
 import { renderMetricsTable } from './components/metricsTable.js';
-import { calculateRoundRobin } from './algorithms/round-robin/roundRobin.js';
-import { calculateWaitingTime, calculateTurnaroundTime, calculateThroughput } from './metrics/index.js';
+import { calculateRoundRobin } from '../algorithms/round-robin/roundRobin.js';
+import { calculateWaitingTime, calculateTurnaroundTime, calculateThroughput } from '../metrics/index.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const processForm = document.getElementById('process-form');
