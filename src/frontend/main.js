@@ -42,64 +42,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Calculate and display results
-  calculateBtn.addEventListener('click', () => {
-    const algorithm = algorithmSelect.value;
-    const processes = [];
-
-    // Collect process data
-    document.querySelectorAll('.process-row').forEach(row => {
-      processes.push({
-        id: row.querySelector('[name="process-id"]').value,
-        arrivalTime: parseInt(row.querySelector('[name="arrival-time"]').value, 10),
-        burstTime: parseInt(row.querySelector('[name="burst-time"]').value, 10),
-        remainingTime: parseInt(row.querySelector('[name="burst-time"]').value, 10)
-      });
-    });
-
-    if (processes.length === 0) {
-      alert('Please add at least one process');
-      return;
-    }
-
-    let schedule, completionTimes;
-
-    try {
-      // Call appropriate algorithm
-      if (algorithm === 'rr') {
-        const quantum = parseInt(quantumInput.value, 10);
-        if (isNaN(quantum) || quantum < 1) {
-          alert('Please enter a valid time quantum');
+    // Calculate and display results
+    calculateBtn.addEventListener('click', () => {
+      const algorithm = algorithmSelect.value;
+      const processes = [];
+  
+      // Collect and validate process data
+      let isValid = true;
+  
+      document.querySelectorAll('.process-row').forEach(row => {
+        const arrivalTime = parseInt(row.querySelector('[name="arrival-time"]').value, 10);
+        const burstTime = parseInt(row.querySelector('[name="burst-time"]').value, 10);
+  
+        if (arrivalTime < 0 || burstTime <= 0 || isNaN(arrivalTime) || isNaN(burstTime)) {
+          isValid = false;
+          alert(`Invalid values detected! Arrival time must be >= 0 and burst time must be > 0.`);
           return;
         }
-        const result = calculateRoundRobin(processes, quantum);
-        schedule = result.schedule;
-        completionTimes = result.completionTimes;
-      } else if (algorithm === 'fcfs') {
-        // FCFS will be implemented by Friend 1
-        alert('FCFS algorithm will be implemented by your teammate');
-        return;
-      } else if (algorithm === 'sjf') {
-        // SJF will be implemented by Friend 2
-        alert('SJF algorithm will be implemented by your teammate');
+  
+        processes.push({
+          id: row.querySelector('[name="process-id"]').value,
+          arrivalTime,
+          burstTime,
+          remainingTime: burstTime
+        });
+      });
+  
+      if (!isValid) return; // Stop execution if input is invalid
+  
+      if (processes.length === 0) {
+        alert('Please add at least one process');
         return;
       }
-
-      // Calculate metrics
-      const waitingTimes = calculateWaitingTime(processes, completionTimes);
-      const turnaroundTimes = calculateTurnaroundTime(processes, completionTimes);
-      const throughput = calculateThroughput(processes, completionTimes);
-
-      // Render results
-      resultsContainer.innerHTML = '';
-      renderGanttChart(resultsContainer, schedule);
-      renderMetricsTable(resultsContainer, processes, waitingTimes, turnaroundTimes, throughput);
-    } catch (error) {
-      console.error('Error in calculation:', error);
-      alert('There was an error calculating the results. Check the console for details.');
-    }
-  });
-
+  
+      let schedule, completionTimes;
+  
+      try {
+        // Call appropriate algorithm
+        if (algorithm === 'rr') {
+          const quantum = parseInt(quantumInput.value, 10);
+          if (isNaN(quantum) || quantum < 1) {
+            alert('Please enter a valid time quantum');
+            return;
+          }
+          const result = calculateRoundRobin(processes, quantum);
+          schedule = result.schedule;
+          completionTimes = result.completionTimes;
+        } else if (algorithm === 'fcfs') {
+          alert('FCFS algorithm will be implemented by your teammate');
+          return;
+        } else if (algorithm === 'sjf') {
+          alert('SJF algorithm will be implemented by your teammate');
+          return;
+        }
+  
+        // Calculate metrics
+        const waitingTimes = calculateWaitingTime(processes, completionTimes);
+        const turnaroundTimes = calculateTurnaroundTime(processes, completionTimes);
+        const throughput = calculateThroughput(processes, completionTimes);
+  
+        // Render results
+        resultsContainer.innerHTML = '';
+        renderGanttChart(resultsContainer, schedule);
+        renderMetricsTable(resultsContainer, processes, waitingTimes, turnaroundTimes, throughput);
+      } catch (error) {
+        console.error('Error in calculation:', error);
+        alert('There was an error calculating the results. Check the console for details.');
+      }
+    });
+  
   // Add initial process (make sure at least one process exists)
   addProcessBtn.click();
 });
