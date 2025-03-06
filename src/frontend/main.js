@@ -1,8 +1,8 @@
 // src/frontend/main.js
 import { renderGanttChart } from './components/ganttChart.js';
 import { renderMetricsTable } from './components/metricsTable.js';
-import { calculateRoundRobin } from '../algorithms/round-robin/roundRobin.js';
-import { calculateWaitingTime, calculateTurnaroundTime, calculateThroughput } from '../metrics/index.js';
+import { calculateRoundRobin } from './algorithms/round-robin/roundRobin.js';
+import { calculateWaitingTime, calculateTurnaroundTime, calculateThroughput } from './metrics/index.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const processForm = document.getElementById('process-form');
@@ -64,35 +64,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let schedule, completionTimes;
 
-    // Call appropriate algorithm
-    if (algorithm === 'rr') {
-      const quantum = parseInt(quantumInput.value, 10);
-      if (isNaN(quantum) || quantum < 1) {
-        alert('Please enter a valid time quantum');
+    try {
+      // Call appropriate algorithm
+      if (algorithm === 'rr') {
+        const quantum = parseInt(quantumInput.value, 10);
+        if (isNaN(quantum) || quantum < 1) {
+          alert('Please enter a valid time quantum');
+          return;
+        }
+        const result = calculateRoundRobin(processes, quantum);
+        schedule = result.schedule;
+        completionTimes = result.completionTimes;
+      } else if (algorithm === 'fcfs') {
+        // FCFS will be implemented by Friend 1
+        alert('FCFS algorithm will be implemented by your teammate');
+        return;
+      } else if (algorithm === 'sjf') {
+        // SJF will be implemented by Friend 2
+        alert('SJF algorithm will be implemented by your teammate');
         return;
       }
-      const result = calculateRoundRobin(processes, quantum);
-      schedule = result.schedule;
-      completionTimes = result.completionTimes;
-    } else if (algorithm === 'fcfs') {
-      // FCFS will be implemented by Friend 1
-      alert('FCFS algorithm will be implemented by your teammate');
-      return;
-    } else if (algorithm === 'sjf') {
-      // SJF will be implemented by Friend 2
-      alert('SJF algorithm will be implemented by your teammate');
-      return;
+
+      // Calculate metrics
+      const waitingTimes = calculateWaitingTime(processes, completionTimes);
+      const turnaroundTimes = calculateTurnaroundTime(processes, completionTimes);
+      const throughput = calculateThroughput(processes, completionTimes);
+
+      // Render results
+      resultsContainer.innerHTML = '';
+      renderGanttChart(resultsContainer, schedule);
+      renderMetricsTable(resultsContainer, processes, waitingTimes, turnaroundTimes, throughput);
+    } catch (error) {
+      console.error('Error in calculation:', error);
+      alert('There was an error calculating the results. Check the console for details.');
     }
-
-    // Calculate metrics
-    const waitingTimes = calculateWaitingTime(processes, completionTimes);
-    const turnaroundTimes = calculateTurnaroundTime(processes, completionTimes);
-    const throughput = calculateThroughput(processes, completionTimes);
-
-    // Render results
-    resultsContainer.innerHTML = '';
-    renderGanttChart(resultsContainer, schedule);
-    renderMetricsTable(resultsContainer, processes, waitingTimes, turnaroundTimes, throughput);
   });
 
   // Add initial process (make sure at least one process exists)
