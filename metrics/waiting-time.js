@@ -17,13 +17,3 @@ export function calculateWaitingTime(processes, completionTimes) {
   
   return waitingTimes;
 }
-
-Find the minimum arrival time
-  const minArrivalTime = Math.min(...processes.map(p => p.arrivalTime));
-  
-  // Calculate total time
-  const totalTime = maxCompletionTime - minArrivalTime;
-  
-  // Calculate throughput
-  return processes.length / totalTime;
-}
