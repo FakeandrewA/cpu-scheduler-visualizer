@@ -30,14 +30,18 @@
           <input type="number" id="time-quantum" name="time-quantum" min="1" value="2">
         </div>
         
-        <div class="table-header">
-          <div>Process ID</div>
-          <div>Arrival Time</div>
-          <div>Burst Time</div>
-          <div>Actions</div>
+        <div class="process-input">
+          <div class="table-header">
+            <div>Process ID</div>
+            <div>Arrival Time</div>
+            <div>Burst Time</div>
+            <div>Actions</div>
+          </div>
+          
+          <div id="processes">
+            <!-- Process rows will be added here by JavaScript -->
+          </div>
         </div>
-        
-        <div id="processes"></div>
         
         <div class="button-group">
           <button type="button" id="add-process">Add Process</button>

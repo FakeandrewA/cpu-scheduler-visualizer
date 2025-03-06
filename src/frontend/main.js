@@ -35,6 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add event listener to remove button
     newProcess.querySelector('.remove-process').addEventListener('click', () => {
       newProcess.remove();
+      // Renumber the process IDs
+      document.querySelectorAll('.process-row').forEach((row, index) => {
+        row.querySelector('[name="process-id"]').value = `P${index}`;
+      });
     });
   });
 
@@ -91,6 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMetricsTable(resultsContainer, processes, waitingTimes, turnaroundTimes, throughput);
   });
 
-  // Add initial process
+  // Add initial process (make sure at least one process exists)
   addProcessBtn.click();
 });

@@ -17,6 +17,11 @@ export function calculateThroughput(processes, completionTimes) {
   // Calculate total time
   const totalTime = maxCompletionTime - minArrivalTime;
   
+  // Check for zero total time (edge case when all processes arrive and complete at the same time)
+  if (totalTime === 0) {
+    return processes.length; // All processes completed instantly
+  }
+  
   // Calculate throughput
   return processes.length / totalTime;
 }

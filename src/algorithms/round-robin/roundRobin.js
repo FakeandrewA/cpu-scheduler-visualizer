@@ -19,18 +19,35 @@ export function calculateRoundRobin(processes, quantum) {
   const completionTimes = {};
   let currentTime = 0;
   let readyQueue = [];
+  let completed = 0;
+  
+  // Initialize with first process arrival if no processes arrive at time 0
+  if (processQueue.length > 0 && processQueue[0].arrivalTime > 0) {
+    currentTime = processQueue[0].arrivalTime;
+  }
+  
+  // Create a map to keep track of remaining times
+  const remainingTimeMap = {};
+  processQueue.forEach(process => {
+    remainingTimeMap[process.id] = process.burstTime;
+  });
   
   // Run until all processes are completed
-  while (processQueue.length > 0 || readyQueue.length > 0) {
+  while (completed < processes.length) {
     // Add newly arrived processes to the ready queue
     while (processQueue.length > 0 && processQueue[0].arrivalTime <= currentTime) {
       readyQueue.push(processQueue.shift());
     }
     
-    // If ready queue is empty, move time to next process arrival
-    if (readyQueue.length === 0) {
+    // If ready queue is empty but processes remain, move time to next process arrival
+    if (readyQueue.length === 0 && processQueue.length > 0) {
       currentTime = processQueue[0].arrivalTime;
       continue;
+    }
+    
+    // If both queues are empty, we're done
+    if (readyQueue.length === 0 && processQueue.length === 0) {
+      break;
     }
     
     // Get the next process from ready queue
@@ -38,9 +55,9 @@ export function calculateRoundRobin(processes, quantum) {
     const startTime = currentTime;
     
     // Execute for quantum time or until process completes
-    const executeTime = Math.min(quantum, currentProcess.remainingTime);
+    const executeTime = Math.min(quantum, remainingTimeMap[currentProcess.id]);
     currentTime += executeTime;
-    currentProcess.remainingTime -= executeTime;
+    remainingTimeMap[currentProcess.id] -= executeTime;
     
     // Add to schedule
     schedule.push({
@@ -50,7 +67,7 @@ export function calculateRoundRobin(processes, quantum) {
     });
     
     // Check if process is completed
-    if (currentProcess.remainingTime > 0) {
+    if (remainingTimeMap[currentProcess.id] > 0) {
       // Add newly arrived processes to the ready queue before putting back the current process
       while (processQueue.length > 0 && processQueue[0].arrivalTime <= currentTime) {
         readyQueue.push(processQueue.shift());
@@ -61,6 +78,7 @@ export function calculateRoundRobin(processes, quantum) {
     } else {
       // Process is completed, record completion time
       completionTimes[currentProcess.id] = currentTime;
+      completed++;
     }
   }
   
