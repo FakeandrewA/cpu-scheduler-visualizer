@@ -21,7 +21,8 @@
           <select id="algorithm" name="algorithm">
             <option value="rr">Round Robin</option>
             <option value="fcfs">First Come First Serve</option>
-            <option value="sjf">Shortest Job First</option>
+            <option value="sjf-np">Shortest Job First (Non-Preemptive)</option>
+            <option value="sjf-p">Shortest Job First (Preemptive)</option>
             <option value="priority-np">Priority (Non-Preemptive)</option>
             <option value="priority-p">Priority (Preemptive)</option>
           </select>
@@ -39,8 +40,11 @@
           <p class="algorithm-info fcfs-info" style="display: none;">
             <strong>First Come First Serve:</strong> Processes are executed in the order they arrive.
           </p>
-          <p class="algorithm-info sjf-info" style="display: none;">
-            <strong>Shortest Job First:</strong> The process with the shortest burst time is executed first.
+          <p class="algorithm-info sjf-np-info" style="display: none;">
+            <strong>Shortest Job First (Non-Preemptive):</strong> The process with the shortest burst time is executed first. Once a process starts, it runs to completion.
+          </p>
+          <p class="algorithm-info sjf-p-info" style="display: none;">
+            <strong>Shortest Job First (Preemptive):</strong> Also known as Shortest Remaining Time First. The process with the shortest remaining time is executed. The current process may be preempted if a shorter job arrives.
           </p>
           <p class="algorithm-info priority-np-info" style="display: none;">
             <strong>Priority (Non-Preemptive):</strong> The process with the highest priority (lowest number) is executed first. Once a process starts, it runs to completion.
