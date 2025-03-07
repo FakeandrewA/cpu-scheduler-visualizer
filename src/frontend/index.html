@@ -22,6 +22,8 @@
             <option value="rr">Round Robin</option>
             <option value="fcfs">First Come First Serve</option>
             <option value="sjf">Shortest Job First</option>
+            <option value="priority-np">Priority (Non-Preemptive)</option>
+            <option value="priority-p">Priority (Preemptive)</option>
           </select>
         </div>
         
@@ -30,11 +32,30 @@
           <input type="number" id="time-quantum" name="time-quantum" min="1" value="2">
         </div>
         
+        <div class="form-group" id="algorithm-description">
+          <p class="algorithm-info rr-info">
+            <strong>Round Robin:</strong> Processes are executed for a fixed time slice, then moved to the back of the queue.
+          </p>
+          <p class="algorithm-info fcfs-info" style="display: none;">
+            <strong>First Come First Serve:</strong> Processes are executed in the order they arrive.
+          </p>
+          <p class="algorithm-info sjf-info" style="display: none;">
+            <strong>Shortest Job First:</strong> The process with the shortest burst time is executed first.
+          </p>
+          <p class="algorithm-info priority-np-info" style="display: none;">
+            <strong>Priority (Non-Preemptive):</strong> The process with the highest priority (lowest number) is executed first. Once a process starts, it runs to completion.
+          </p>
+          <p class="algorithm-info priority-p-info" style="display: none;">
+            <strong>Priority (Preemptive):</strong> The process with the highest priority (lowest number) is executed. If a higher priority process arrives, the current process is preempted.
+          </p>
+        </div>
+        
         <div class="process-input">
           <div class="table-header">
             <div>Process ID</div>
             <div>Arrival Time</div>
             <div>Burst Time</div>
+            <div class="priority-header" style="display: none;">Priority</div>
             <div>Actions</div>
           </div>
           
@@ -61,5 +82,21 @@
   </footer>
   
   <script type="module" src="main.js"></script>
+  <script>
+    // Show/hide algorithm descriptions based on selection
+    document.addEventListener('DOMContentLoaded', () => {
+      const algorithmSelect = document.getElementById('algorithm');
+      const showAlgorithmInfo = () => {
+        const algorithm = algorithmSelect.value;
+        document.querySelectorAll('.algorithm-info').forEach(info => {
+          info.style.display = 'none';
+        });
+        document.querySelector(`.${algorithm}-info`).style.display = 'block';
+      };
+      
+      algorithmSelect.addEventListener('change', showAlgorithmInfo);
+      showAlgorithmInfo(); // Show initial info
+    });
+  </script>
 </body>
 </html>
