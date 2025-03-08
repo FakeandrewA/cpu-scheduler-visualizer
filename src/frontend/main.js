@@ -4,6 +4,7 @@ import { renderMetricsTable } from './components/metricsTable.js';
 import { calculateRoundRobin } from '../algorithms/round-robin/roundRobin.js';
 import { calculateNonPreemptivePriority, calculatePreemptivePriority } from '../algorithms/priority/priorityScheduling.js';
 import { calculateNonPreemptiveSJF, calculatePreemptiveSJF } from '../algorithms/sjf/sjfScheduling.js';
+import { calculateFCFS } from '../algorithms/fcfs/fcfsScheduling.js';
 import { calculateWaitingTime, calculateTurnaroundTime, calculateThroughput } from '../metrics/index.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -147,8 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
         schedule = result.schedule;
         completionTimes = result.completionTimes;
       } else if (algorithm === 'fcfs') {
-        alert('FCFS algorithm will be implemented by your teammate');
-        return;
+        const result = calculateFCFS(processes);
+        schedule = result.schedule;
+        completionTimes = result.completionTimes;
       } else if (algorithm === 'sjf-np') {
         const result = calculateNonPreemptiveSJF(processes);
         schedule = result.schedule;
