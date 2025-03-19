@@ -13,138 +13,142 @@
 
   <main>
     <!-- Section: Insights & Key Findings -->
-<section id="insights-summary">
-  <h2>Insights & Key Findings</h2>
-  <div class="card-content">
-    <ul>
-      <li><strong>SRTF (Shortest Remaining Time First)</strong> demonstrates superior performance in most cases, especially when the number of processes is high and burst times are predictable.</li>
-      <li><strong>FCFS (First Come First Serve)</strong> is easy to implement but often results in longer waiting times and less efficient CPU utilization.</li>
-      <li><strong>Round Robin</strong> is effective for time-sharing systems but requires optimal time quantum selection. Poor time quantum can lead to excessive context switching or higher waiting times.</li>
-      <li><strong>Priority Scheduling</strong> can efficiently handle processes with different importance levels but may suffer from starvation issues if not combined with aging techniques.</li>
-    </ul>
-  </div>
-</section>
+    <section id="insights-summary">
+      <h2>Insights & Key Findings</h2>
+      <div class="card-content">
+        <ul>
+          <li><strong>SRTF (Shortest Remaining Time First)</strong> demonstrates superior performance in most cases, especially when the number of processes is high and burst times are predictable.</li>
+          <li><strong>FCFS (First Come First Serve)</strong> is easy to implement but often results in longer waiting times and less efficient CPU utilization.</li>
+          <li><strong>Round Robin</strong> is effective for time-sharing systems but requires optimal time quantum selection. Poor time quantum can lead to excessive context switching or higher waiting times.</li>
+          <li><strong>Priority Scheduling</strong> can efficiently handle processes with different importance levels but may suffer from starvation issues if not combined with aging techniques.</li>
+        </ul>
+      </div>
+    </section>
 
-<!-- Section: Process Input -->
-<section id="input-section">
-  <h2>Process Input</h2>
-  <p><strong>Recommendation:</strong> SRTF is recommended for workloads with many processes and predictable burst times. For highly variable or priority-sensitive workloads, consider Priority Scheduling or Round Robin.</p>
-  <form id="process-form">
-    <div class="form-group">
-      <label for="algorithm">Scheduling Algorithm:</label>
-      <select id="algorithm" name="algorithm">
-        <option value="rr">Round Robin</option>
-        <option value="fcfs">First Come First Serve</option>
-        <option value="sjf-np">Shortest Job First (Non-Preemptive)</option>
-        <option value="sjf-p" selected>Shortest Job First (Preemptive - SRTF)</option>
-        <option value="priority-np">Priority (Non-Preemptive)</option>
-        <option value="priority-p">Priority (Preemptive)</option>
-      </select>
-    </div>
+    <!-- Section: Process Input -->
+    <section id="input-section">
+      <h2>Process Input</h2>
+      <p><strong>Recommendation:</strong> SRTF is recommended for workloads with many processes and predictable burst times. For highly variable or priority-sensitive workloads, consider Priority Scheduling or Round Robin.</p>
+      <form id="process-form">
+        <div class="form-group">
+          <label for="algorithm">Scheduling Algorithm:</label>
+          <select id="algorithm" name="algorithm">
+            <option value="rr" title="Round Robin: Fixed time slice execution">Round Robin</option>
+            <option value="fcfs" title="FCFS: Processes are executed in the order they arrive">First Come First Serve</option>
+            <option value="sjf-np" title="SJF Non-Preemptive: Executes the shortest job first">Shortest Job First (Non-Preemptive)</option>
+            <option value="sjf-p" selected title="SJF Preemptive: Executes the process with the shortest remaining time">Shortest Job First (Preemptive - SRTF)</option>
+            <option value="priority-np" title="Priority Non-Preemptive: Highest priority process first">Priority (Non-Preemptive)</option>
+            <option value="priority-p" title="Priority Preemptive: Preempts lower priority processes">Priority (Preemptive)</option>
+          </select>
+        </div>
 
-    <div class="form-group" id="quantum-container">
-      <label for="time-quantum">Time Quantum:</label>
-      <input type="number" id="time-quantum" name="time-quantum" min="1" value="2">
-    </div>
+        <div class="form-group" id="quantum-container" style="display: none;">
+          <label for="time-quantum">Time Quantum:</label>
+          <input type="number" id="time-quantum" name="time-quantum" min="1" value="2">
+          <div class="error-message" id="time-quantum-error"></div>
+        </div>
 
-    <div class="form-group" id="algorithm-description">
-      <p class="algorithm-info rr-info">
-        <strong>Round Robin:</strong> Processes are executed for a fixed time slice, then moved to the back of the queue.
-      </p>
-      <p class="algorithm-info fcfs-info" style="display: none;">
-        <strong>First Come First Serve:</strong> Processes are executed in the order they arrive.
-      </p>
-      <p class="algorithm-info sjf-np-info" style="display: none;">
-        <strong>Shortest Job First (Non-Preemptive):</strong> Executes the shortest burst time process first.
-      </p>
-      <p class="algorithm-info sjf-p-info" style="display: none;">
-        <strong>Shortest Job First (Preemptive):</strong> Executes the process with the shortest remaining time (SRTF).
-      </p>
-      <p class="algorithm-info priority-np-info" style="display: none;">
-        <strong>Priority (Non-Preemptive):</strong> Executes the highest priority process first.
-      </p>
-      <p class="algorithm-info priority-p-info" style="display: none;">
-        <strong>Priority (Preemptive):</strong> Preempts lower priority processes if a higher priority process arrives.
-      </p>
-    </div>
+        <div class="form-group" id="algorithm-description">
+          <p class="algorithm-info rr-info">
+            <strong>Round Robin:</strong> Processes are executed for a fixed time slice, then moved to the back of the queue.
+          </p>
+          <p class="algorithm-info fcfs-info" style="display: none;">
+            <strong>First Come First Serve:</strong> Processes are executed in the order they arrive.
+          </p>
+          <p class="algorithm-info sjf-np-info" style="display: none;">
+            <strong>Shortest Job First (Non-Preemptive):</strong> Executes the shortest burst time process first.
+          </p>
+          <p class="algorithm-info sjf-p-info" style="display: none;">
+            <strong>Shortest Job First (Preemptive):</strong> Executes the process with the shortest remaining time (SRTF).
+          </p>
+          <p class="algorithm-info priority-np-info" style="display: none;">
+            <strong>Priority (Non-Preemptive):</strong> Executes the highest priority process first.
+          </p>
+          <p class="algorithm-info priority-p-info" style="display: none;">
+            <strong>Priority (Preemptive):</strong> Preempts lower priority processes if a higher priority process arrives.
+          </p>
+        </div>
 
-    <div class="process-input">
-      <div class="table-header">
-        <div>Process ID</div>
-        <div>Arrival Time</div>
-        <div>Burst Time</div>
-        <div class="priority-header" style="display: none;">Priority</div>
-        <div>Actions</div>
+        <div class="process-input">
+          <div class="table-header">
+            <div>Process ID</div>
+            <div>Arrival Time</div>
+            <div>Burst Time</div>
+            <div class="priority-header" style="display: none;">Priority</div>
+            <div>Actions</div>
+          </div>
+
+          <div id="processes">
+            <!-- Process rows will be added here by JavaScript -->
+          </div>
+        </div>
+
+        <div class="error-message" id="form-error"></div>
+
+        <div class="button-group">
+          <button type="button" id="add-process">Add Process</button>
+          <button type="button" id="calculate">Calculate</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Section: Results -->
+    <section id="results-section">
+      <h2>Results</h2>
+      <div id="results"></div>
+    </section>
+
+    <!-- Section: Detailed Data Analysis -->
+    <section id="data-analysis">
+      <h2>Detailed Algorithm Analysis</h2>
+
+      <div class="card">
+        <h3>Algorithm Selection Distribution</h3>
+        <canvas id="selectionPieChart" class="chart-container"></canvas>
+        <p><strong>SRTF</strong> was chosen in <span style="color:#6366f1; font-weight:600;">60%</span> of test cases based on overall efficiency and wait time performance.</p>
       </div>
 
-      <div id="processes">
-        <!-- Process rows will be added here by JavaScript -->
+      <div class="card">
+        <h3>Impact of Burst Time Variability</h3>
+        <canvas id="burstBarChart" class="chart-container"></canvas>
+        <p>When burst time variability increases, <strong>SRTF</strong> adapts better, minimizing overall waiting and turnaround times in most cases.</p>
       </div>
-    </div>
 
-    <div class="button-group">
-      <button type="button" id="add-process">Add Process</button>
-      <button type="button" id="calculate">Calculate</button>
-    </div>
-  </form>
-</section>
+      <div class="card">
+        <h3>Average Wait Time Comparison</h3>
+        <div class="tabs">
+          <button class="tab-button active" data-target="waitChart">Chart</button>
+          <button class="tab-button" data-target="waitInsights">Insights</button>
+        </div>
+        <div id="waitChart" class="tab-content active">
+          <canvas id="waitLineChart" class="chart-container"></canvas>
+        </div>
+        <div id="waitInsights" class="tab-content">
+          <p><strong>SRTF</strong> consistently provides the lowest average waiting time, followed by SJF (Non-Preemptive). FCFS often results in the highest waiting times under variable loads.</p>
+        </div>
+      </div>
 
-<!-- Section: Results -->
-<section id="results-section">
-  <h2>Results</h2>
-  <div id="results"></div>
-</section>
+      <div class="card">
+        <h3>Efficiency Comparison</h3>
+        <div class="tabs">
+          <button class="tab-button active" data-target="efficiencyChart">Chart</button>
+          <button class="tab-button" data-target="efficiencyInsights">Insights</button>
+        </div>
+        <div id="efficiencyChart" class="tab-content active">
+          <canvas id="efficiencyBarChart" class="chart-container"></canvas>
+        </div>
+        <div id="efficiencyInsights" class="tab-content">
+          <p><strong>SRTF</strong> delivers higher throughput and lower wait times in most scenarios. Round Robin efficiency depends heavily on optimal time quantum selection.</p>
+        </div>
+      </div>
+    </section>
 
-<!-- Section: Detailed Data Analysis -->
-<section id="data-analysis">
-  <h2>Detailed Algorithm Analysis</h2>
-
-  <div class="card">
-    <h3>Algorithm Selection Distribution</h3>
-    <canvas id="selectionPieChart" class="chart-container"></canvas>
-    <p><strong>SRTF</strong> was chosen in <span style="color:#6366f1; font-weight:600;">60%</span> of test cases based on overall efficiency and wait time performance.</p>
-  </div>
-
-  <div class="card">
-    <h3>Impact of Burst Time Variability</h3>
-    <canvas id="burstBarChart" class="chart-container"></canvas>
-    <p>When burst time variability increases, <strong>SRTF</strong> adapts better, minimizing overall waiting and turnaround times in most cases.</p>
-  </div>
-
-  <div class="card">
-    <h3>Average Wait Time Comparison</h3>
-    <div class="tabs">
-      <button class="tab-button active" data-target="waitChart">Chart</button>
-      <button class="tab-button" data-target="waitInsights">Insights</button>
-    </div>
-    <div id="waitChart" class="tab-content active">
-      <canvas id="waitLineChart" class="chart-container"></canvas>
-    </div>
-    <div id="waitInsights" class="tab-content">
-      <p><strong>SRTF</strong> consistently provides the lowest average waiting time, followed by SJF (Non-Preemptive). FCFS often results in the highest waiting times under variable loads.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3>Efficiency Comparison</h3>
-    <div class="tabs">
-      <button class="tab-button active" data-target="efficiencyChart">Chart</button>
-      <button class="tab-button" data-target="efficiencyInsights">Insights</button>
-    </div>
-    <div id="efficiencyChart" class="tab-content active">
-      <canvas id="efficiencyBarChart" class="chart-container"></canvas>
-    </div>
-    <div id="efficiencyInsights" class="tab-content">
-      <p><strong>SRTF</strong> delivers higher throughput and lower wait times in most scenarios. Round Robin efficiency depends heavily on optimal time quantum selection.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Section: Disclaimer -->
-<section id="disclaimer">
-  <h2>Disclaimer</h2>
-  <p>This simulator is built for educational purposes and demonstrates the working of different CPU scheduling algorithms. Real-world systems typically handle thousands of processes with more complex scenarios, which require sophisticated and optimized scheduling strategies. Due to computational limitations, this tool uses a toy dataset that randomly generates process sets with varying numbers of processes, burst times, and arrival times for analysis and visualization.</p>
-</section>
+    <!-- Section: Disclaimer -->
+    <section id="disclaimer">
+      <h2>Disclaimer</h2>
+      <p>This simulator is built for educational purposes and demonstrates the working of different CPU scheduling algorithms. Real-world systems typically handle thousands of processes with more complex scenarios, which require sophisticated and optimized scheduling strategies. Due to computational limitations, this tool uses a toy dataset that randomly generates process sets with varying numbers of processes, burst times, and arrival times for analysis and visualization.</p>
+    </section>
+  </main>
 
   <script type="module" src="main.js"></script>
 </body>

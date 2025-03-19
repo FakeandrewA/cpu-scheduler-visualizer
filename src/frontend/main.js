@@ -73,6 +73,7 @@ function updateAlgorithmDescription(selectedAlgorithm) {
     }
   }
 }
+
 function initializeCharts() {
   const selectionPieCtx = document.getElementById('selectionPieChart')?.getContext('2d');
   if (selectionPieCtx) {
@@ -148,6 +149,19 @@ function initializeCharts() {
     });
   });
 }
+
+function showError(message, containerId) {
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.innerText = message;
+    container.style.display = 'block';
+    setTimeout(() => {
+      container.innerText = '';
+      container.style.display = 'none';
+    }, 3000);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const processForm = document.getElementById('process-form');
   const addProcessBtn = document.getElementById('add-process');
@@ -165,7 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
   processForm.querySelector('.button-group').appendChild(recommendBtn);
   initializeCharts();
 
+  // Add initial process row only once
   addProcessBtn.click();
+
   algorithmSelect.addEventListener('change', () => {
     const quantumContainer = document.getElementById('quantum-container');
     const isPriority = algorithmSelect.value === 'priority-np' || algorithmSelect.value === 'priority-p';
@@ -200,9 +216,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateAlgorithmDescription(algorithmSelect.value);
   });
 
-  // Correction: Dispatch a change event on page load to update the time quantum field correctly.
+  // Dispatch change event to set initial state correctly
   algorithmSelect.dispatchEvent(new Event('change'));
-
   updateAlgorithmDescription(algorithmSelect.value);
 
   addProcessBtn.addEventListener('click', () => {
@@ -237,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const numProcesses = rows.length;
 
     if (numProcesses === 0) {
-      alert('Please add at least one process to get a recommendation.');
+      showError('Please add at least one process to get a recommendation.', 'form-error');
       return;
     }
 
@@ -297,14 +312,14 @@ document.addEventListener('DOMContentLoaded', () => {
         priority = parseInt(priorityInput.value, 10);
         if (isNaN(priority) || priority < 1) {
           isValid = false;
-          alert(`Invalid priority for ${row.querySelector('[name="process-id"]').value}! Priority must be a positive integer.`);
+          showError(`Invalid priority for ${row.querySelector('[name="process-id"]').value}! Priority must be a positive integer.`, 'form-error');
           return;
         }
       }
 
       if (arrivalTime < 0 || burstTime <= 0 || isNaN(arrivalTime) || isNaN(burstTime)) {
         isValid = false;
-        alert(`Invalid values detected! Arrival time must be >= 0 and burst time must be > 0.`);
+        showError('Invalid values detected! Arrival time must be >= 0 and burst time must be > 0.', 'form-error');
         return;
       }
 
@@ -320,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isValid) return;
 
     if (processes.length === 0) {
-      alert('Please add at least one process');
+      showError('Please add at least one process.', 'form-error');
       return;
     }
 
@@ -330,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (algorithm === 'rr') {
         const quantum = parseInt(quantumInput.value, 10);
         if (isNaN(quantum) || quantum < 1) {
-          alert('Please enter a valid time quantum');
+          showError('Please enter a valid time quantum.', 'time-quantum-error');
           return;
         }
         const result = calculateRoundRobin(processes, quantum);
@@ -367,9 +382,9 @@ document.addEventListener('DOMContentLoaded', () => {
       renderMetricsTable(resultsContainer, processes, waitingTimes, turnaroundTimes, throughput);
     } catch (error) {
       console.error('Error in calculation:', error);
-      alert('There was an error calculating the results. Check the console for details.');
+      showError('There was an error calculating the results. Check the console for details.', 'form-error');
     }
   });
 
-  addProcessBtn.click();
+  // Removed duplicate addProcessBtn.click() to avoid redundancy
 });

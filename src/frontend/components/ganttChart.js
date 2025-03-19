@@ -1,67 +1,88 @@
-// src/frontend/components/ganttChart.js
+// // src/frontend/components/ganttChart.js
 
-/**
- * Renders a Gantt chart visualization for the CPU scheduling
- * @param {HTMLElement} container - The DOM element to render the chart into
- * @param {Array} schedule - Array of scheduling events with process id and time
- */
-export function renderGanttChart(container, schedule) {
-  if (!container || !Array.isArray(schedule) || schedule.length === 0) {
-    console.error("Invalid Gantt chart input.");
-    return;
-  }
+// /**
+//  * Renders a Gantt chart visualization for the CPU scheduling
+//  * @param {HTMLElement} container - The DOM element to render the chart into
+//  * @param {Array} schedule - Array of scheduling events with processId, startTime, endTime
+//  */
+// export function renderGanttChart(container, schedule) {
+//   if (!container || !Array.isArray(schedule) || schedule.length === 0) {
+//     console.error("Invalid Gantt chart input.");
+//     return;
+//   }
 
-  const ganttSection = document.createElement('div');
-  ganttSection.className = 'gantt-chart';
-  ganttSection.innerHTML = '<h3>Gantt Chart</h3>';
+//   // Create a section for the Gantt chart
+//   const ganttSection = document.createElement('div');
+//   ganttSection.className = 'gantt-chart';
+//   ganttSection.innerHTML = '<h3>Gantt Chart</h3>';
 
-  const ganttContainer = document.createElement('div');
-  ganttContainer.className = 'gantt-container';
+//   // Main containers
+//   const ganttContainer = document.createElement('div');
+//   ganttContainer.className = 'gantt-container';
 
-  const timelineContainer = document.createElement('div');
-  timelineContainer.className = 'timeline-container';
+//   const timelineContainer = document.createElement('div');
+//   timelineContainer.className = 'timeline-container';
 
-  // Determine min & max times
-  const minTime = Math.min(...schedule.map(item => item.startTime));
-  const maxTime = Math.max(...schedule.map(item => item.endTime));
-  const totalTime = maxTime - minTime;
+//   // Determine the earliest (min) and latest (max) times
+//   const minTime = Math.min(...schedule.map(item => item.startTime));
+//   const maxTime = Math.max(...schedule.map(item => item.endTime));
+//   let totalTime = maxTime - minTime;
 
-  // Decide how many pixels per unit of time
-  // e.g., try to fit chart in 500px or use a set ratio
-  const scaleFactor = Math.max(500 / (totalTime || 1), 10);
+//   // Prevent division by zero if all processes have the same start/end
+//   if (totalTime < 1) {
+//     totalTime = 1;
+//   }
 
-  // Set container width so the timeline marks don’t overflow
-  ganttContainer.style.width = `${totalTime * scaleFactor}px`;
-  timelineContainer.style.width = `${totalTime * scaleFactor}px`;
+//   // Set a fixed maximum width (in px) to keep the chart contained
+//   const MAX_WIDTH = 800;
+//   const scaleFactor = MAX_WIDTH / totalTime;
 
-  // Create blocks for each process
-  schedule.forEach(item => {
-    const { processId, startTime, endTime } = item;
-    const duration = endTime - startTime;
+//   // Force the container widths to our fixed maximum
+//   ganttContainer.style.width = `${MAX_WIDTH}px`;
+//   timelineContainer.style.width = `${MAX_WIDTH}px`;
 
-    // Create a block
-    const block = document.createElement('div');
-    block.className = 'gantt-block';
-    // Position based on actual time
-    block.style.left = `${(startTime - minTime) * scaleFactor}px`;
-    block.style.width = `${duration * scaleFactor}px`;
+//   // Create Gantt blocks for each scheduled segment
+//   schedule.forEach(item => {
+//     const { processId, startTime, endTime } = item;
+//     const duration = endTime - startTime;
 
-    block.innerText = processId;
-    block.title = `${processId}: ${startTime} - ${endTime} (Duration: ${duration})`;
+//     // Create a block for the process segment
+//     const block = document.createElement('div');
+//     block.className = 'gantt-block';
 
-    ganttContainer.appendChild(block);
-  });
+//     // Position the block relative to the earliest time
+//     block.style.left = `${(startTime - minTime) * scaleFactor}px`;
+//     block.style.width = `${duration * scaleFactor}px`;
 
-  // Create timeline marks (one for each integer time, or only starts—your choice)
-  for (let t = minTime; t <= maxTime; t++) {
-    const mark = document.createElement('div');
-    mark.className = 'timeline-mark';
-    mark.style.left = `${(t - minTime) * scaleFactor}px`;
-    mark.innerText = t;
-    timelineContainer.appendChild(mark);
-  }
+//     // Show the process ID as text (optional)
+//     block.innerText = processId;
 
-  ganttSection.appendChild(ganttContainer);
-  ganttSection.appendChild(timelineContainer);
-  container.appendChild(ganttSection);
-}
+//     // Tooltip with more details
+//     block.title = `${processId}: ${startTime} - ${endTime} (Duration: ${duration})`;
+
+//     ganttContainer.appendChild(block);
+//   });
+
+//   // We only want timeline marks at CPU switches (start or end times)
+//   // Gather all unique switch times into a sorted array
+//   const switchTimesSet = new Set();
+//   schedule.forEach(item => {
+//     switchTimesSet.add(item.startTime);
+//     switchTimesSet.add(item.endTime);
+//   });
+//   const switchTimes = [...switchTimesSet].sort((a, b) => a - b);
+
+//   // Create a timeline mark for each switch time
+//   switchTimes.forEach(time => {
+//     const mark = document.createElement('div');
+//     mark.className = 'timeline-mark';
+//     mark.style.left = `${(time - minTime) * scaleFactor}px`;
+//     mark.innerText = time;
+//     timelineContainer.appendChild(mark);
+//   });
+
+//   // Append everything to the container
+//   ganttSection.appendChild(ganttContainer);
+//   ganttSection.appendChild(timelineContainer);
+//   container.appendChild(ganttSection);
+// }

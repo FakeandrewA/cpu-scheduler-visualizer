@@ -1,4 +1,4 @@
-/* src/frontend/styles/main.css */
+/* src/frontend/styles/main.css sad*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -216,6 +216,13 @@ button.remove-process:hover {
   display: block;
 }
 
+.error-message {
+  color: #d32f2f;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+/* Responsive design improvements */
 @media (max-width: 768px) {
   .process-row, .table-header {
     grid-template-columns: 2fr 3fr 3fr 2fr;
