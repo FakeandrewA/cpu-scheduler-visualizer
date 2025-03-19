@@ -200,6 +200,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateAlgorithmDescription(algorithmSelect.value);
   });
 
+  // Correction: Dispatch a change event on page load to update the time quantum field correctly.
+  algorithmSelect.dispatchEvent(new Event('change'));
+
   updateAlgorithmDescription(algorithmSelect.value);
 
   addProcessBtn.addEventListener('click', () => {
