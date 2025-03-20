@@ -1,86 +1,102 @@
-# cpu-scheduler-visualizer
+# Intelligent CPU Scheduler Visualizer
+
 ## Overview
-CPU Scheduler Visualizer is an interactive web-based tool designed to simulate and visualize different CPU scheduling algorithms. This project helps users understand how processes are scheduled in an operating system, providing clear insights into waiting time, turnaround time, and overall system performance.
+**CPU Scheduler Visualizer** is an interactive web-based tool that simulates and visualizes different CPU scheduling algorithms. It helps users understand how processes are scheduled and provides insights into metrics like waiting time, turnaround time, and system throughput.
+
+This project now includes an **AI-based recommendation system** to suggest the most efficient scheduling algorithm based on the given process set.
+
+---
 
 ## Features
-- Interactive visualization of scheduling algorithms
-- Supports multiple scheduling algorithms:
+
+- 🔧 **Interactive Visualization** of popular CPU scheduling algorithms.
+- 🤖 **AI-Based Recommendation Engine** suggests the optimal algorithm based on process characteristics.
+- 🕐 **Supported Algorithms**
   - First Come First Serve (FCFS)
   - Shortest Job First (SJF)
   - Round Robin (RR)
   - Priority Scheduling (Non-Preemptive & Preemptive)
-- Performance metrics calculations:
-  - Waiting Time
-  - Turnaround Time
+- 📊 **Performance Metrics Calculation**
+  - Average Waiting Time
+  - Average Turnaround Time
   - Throughput
-- Clean UI for an easy-to-understand representation of process execution
+- ✨ **User-Friendly Interface**
+- 📈 **Graphical Analysis and Reports**
 
-## Project Structure
-```
-cpu-scheduler-visualizer/
-├── README.md                 # Project overview, setup instructions, contributor guidelines
-├── CONTRIBUTING.md           # Contribution guidelines
-├── .gitignore                # Files to ignore in git
-├── src/                      # Source code directory
-│   ├── frontend/             # Frontend code
-│   │   ├── components/       # Reusable UI components
-│   │   ├── styles/           # CSS/styling files
-│   │   ├── utils/            # Helper functions
-│   │   └── main.js           # Main entry point
-│   ├── algorithms/           # Scheduling algorithm implementations
-│   │   ├── round-robin/      # Round Robin (your responsibility)
-│   │   ├── fcfs/             # First Come First Serve + Priority Scheduling (friend 1)
-│   │   │   ├── fcfs.js
-│   │   │   ├── priority.js
-│   │   └── sjf/              # Shortest Job First (friend 2)
-│   └── metrics/              # Performance metrics calculations
-│       ├── waiting-time.js
-│       ├── turnaround-time.js
-│       ├── throughput.js
-│       └── index.js
-├── tests/                    # Test files
-│   ├── frontend/
-│   ├── algorithms/
-│   └── metrics/
-└── docs/                     # Documentation
-    ├── algorithms/           # Algorithm explanations
-    └── api/                  # API documentation
-```
+---
 
 ## Installation & Setup
+
 ### Prerequisites
-- [Node.js](https://nodejs.org/) installed
-- Git installed
+- [Node.js](https://nodejs.org/)
+- [Git](https://git-scm.com/)
 
 ### Steps
-1. **Clone the repository:**
+
+1. **Clone the Repository**
    ```bash
    git clone https://github.com/your-username/cpu-scheduler-visualizer.git
    cd cpu-scheduler-visualizer
    ```
-2. **Install dependencies:**
+
+2. **Install Dependencies**
    ```bash
    npm install
    ```
-3. **Run the project locally:**
+
+3. **Run the Project Locally**
    ```bash
    npm start
    ```
-4. **Open in your browser:**
-   - The application should be running at `http://localhost:3000/`
+
+4. **Access the App**
+   Open https://fakeandrewa.github.io/cpu-scheduler-visualizer/src/frontend/ in your browser.
+
+---
 
 ## How to Use
-1. Choose a scheduling algorithm from the list.
-2. Input process details (arrival time, burst time, priority if applicable).
-3. Click "Run Simulation" to visualize the scheduling.
-4. View calculated performance metrics.
+
+1. **Select** a scheduling algorithm or use the AI-based recommendation.
+2. **Input** process details such as arrival time, burst time, and priority (if applicable).
+3. **Run Simulation** to view the Gantt chart and scheduling visualization.
+4. **Analyze** the metrics and performance insights.
+
+---
+
+## Project Structure (Simplified)
+
+```
+cpu-scheduler-visualizer/
+├── .idea/                  # Project configuration files
+├── docs/                  # Documentation (algorithms, API, etc.)
+├── src/                   # Source code
+│   ├── ai-model/          # AI-based recommendation engine
+│   ├── algorithms/        # Scheduling algorithm implementations
+│   ├── frontend/          # Frontend UI components, styles, utils
+│   └── metrics/           # Performance metrics calculations
+├── test/                  # Tests for frontend, algorithms, metrics
+├── CONTRIBUTING.md        # Contribution guidelines
+└── README.md              # Project overview (this file)
+```
+
+---
 
 ## Contributing
-We welcome contributions! Check out [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute.
+We welcome contributions from the community! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+---
+
+## License
+This project is licensed under the [MIT License](LICENSE).
+
+---
 
 ## Contact
-For any questions or suggestions, feel free to reach out:
-- **GitHub Issues**: Submit a ticket on the repository.
-- **Email**: your-email@example.com
 
-Happy coding! 🚀
+- 📧 **Email**: andrewgtc2005@gmail.com
+- 🐞 **Issues**: [GitHub Issues](https://github.com/FakeandrewA/cpu-scheduler-visualizer/issues)
+
+---
+
+Happy Coding! 🚀
+
